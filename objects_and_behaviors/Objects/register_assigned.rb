@@ -1,4 +1,31 @@
+module LineManager
+	def shortest_lines
+		begin
+			
+		rescue Exception => e
+			
+		end
+	end
+
+	def longest_lines
+		begin
+			
+		rescue Exception => e
+			
+		end
+	end
+
+	def fastest_line
+		begin
+			
+		rescue Exception => e
+			
+		end
+	end
+end
+
 class Register
+	include LineManager
 	attr_accessor :line_length, :number_of_products_on_belt, :user, :transaction_speed, :register_id, :scanned_items, :void_items, :scanned_more_than_needed_items, :total, :total_with_tax, :subtotal, :delete_items, :transactions_completed, :time_of_sign_outs, :product_database, :selected_items
 
 	def initialize params
