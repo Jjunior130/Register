@@ -1,80 +1,100 @@
-module LineManager
-	def shortest_lines
-		begin
-			
-		rescue Exception => e
-			
-		end
-	end
-
-	def longest_lines
-		begin
-			
-		rescue Exception => e
-			
-		end
-	end
-
-	def fastest_line
-		begin
-			
-		rescue Exception => e
-			
-		end
-	end
-end
-
+##                                                                         |
+# represents a register                                                    |
+#                                                                          |
 class Register
-	include LineManager
-	attr_accessor :line_length, :number_of_products_on_belt, :user, :transaction_speed, :register_id, :scanned_items, :void_items, :scanned_more_than_needed_items, :total, :total_with_tax, :subtotal, :delete_items, :transactions_completed, :time_of_sign_outs, :product_database, :selected_items
+  attr_reader :scanned_items, :til, :register_id
 
-	def initialize params
-		begin
-			@register_id = params[:register_id]
-			@amount_in_register = 0
-			@line_memento = {}
-			@line_length = 0
-			@@registers = [].insert @register_id, self
-		end
-	end
+  ##                                                                       |
+  # creates a register object                                              |
+  #                                                                        |
+  def initialize(params = nil)
+    @register_id = case params
+                   when nil then 0
+                   else params[:register_id] end
+    @scanned_items = []
+    @til = 0.0
+  end
 
-	def Register.fastest_transaction_speed
-		begin
-			@@registers.each do |register|
-				fastest = [].insert register.id, register.transaction_speed
-			end
-		end
-	end
+  ##                                                                       |
+  # scans an object and adds it to the list of all scanned items from which|
+  # you can use void_last method to remove the last scanned item.          |
+  #                                                                        |
+  # this method expresses the process of it scanning the item, displaying  |
+  # to the console when has what been scanned and by which register,       |
+  # register_id.                                                           |
+  #                                                                        |
+  # register1 = Register.new register_id: 1                                |
+  # register1.scanned_items # => []                                        |
+  # Cashier.new.set_register(register1).scan 123,                          |
+  #                                          :barcode,                     |
+  #                                          "bananas"                     |
+  # register1.scanned_items # => [123, :barcode, "bananas"]                |
+  #                                                                        |
+  def scan(*upc)
+    upc.nil? ? return : nil
+    @scanned_items << upc
+    rescue => e
+      e.inspect
+      puts e.backtrace.join("\n")
+    else
+      puts "Register #{@register_id}	| scanned #{upc}	| #{Time.now}	"
+  end
 
-	def id
-		begin
-			@register_id
-		end
-	end
+  ##                                                                       |
+  # removes the last item within the @scanned_items array.                 |
+  #                                                                        |
+  # register1 = Register.new register_id: 1                                |
+  # register1.scanned_items # => []                                        |
+  # Cashier.new.set_register(register1).scan 123,                          |
+  #                                          :barcode,                     |
+  #                                          "bananas"                     |
+  # register1.scanned_items # => [123, :barcode, "bananas"]                |
+  # register1.void_last_item # => "bananas"                                |
+  # register1.scanned_items # => [123, :barcode]                           |
+  #                                                                        |
+  def void_last_item
+    @scanned_items.pop
+  end
 
-	def increase_line_length amount=1
-		begin
-			@line_length += amount
-			@line_memento.unshift "Register #{@register_id} with #{@line_length} customers in line."
-		end
-	end
+  ##                                                                       |
+  # remove upc from	@scanned_items                                     |
+  # register1 = Register.new register_id: 1                                |
+  # register1.scanned_items # => []                                        |
+  # Cashier.new.set_register(register1).scan 123,                          |
+  #                                          :barcode,                     |
+  #                                          "bananas"                     |
+  # register1.void :barcode                                                |
+  # register1.scanned_items # => [123, "bananas"]                          |
+  #                                                                        |
+  def void(upc)
+    @scanned_items.delete upc
+  end
 
-	def decrease_line_length amount=1
-		begin
-			@line_length -= amount
-			@line_memento.unshift "Register #{@register_id} with #{@line_length} customers in line."
-		end
-	end
+  ##                                                                       |
+  # increases the money inside the @til by_amount                          |
+  #                                                                        |
+  # register1 = Register.new register_id: 1                                |
+  # register1.til_amount # => 0.0                                          |
+  # register1.increase_til_amount 13.37                                    |
+  # register1.til_amount # => 13.37				           |
+  # register1.increase_til_amount 1.04     	                           |
+  # register1.til_amount # => 14.41				           |
+  #                                                                        |
+  def increase_til_amount(by_amount)
+    @til += by_amount
+  end
 
-	def user
-		begin
-			@user.to_s
-		end
-	end
-
-	def scan upc
-		begin
-			@scanned_items << upc
-		end
-	end
+  ##                                                                       |
+  # decreases the money inside the @til by_amount                          |
+  #                                                                        |
+  # register1 = Register.new register_id: 1                                |
+  # register1.til_amount # => 0.0                                          |
+  # register1.increase_til_amount 13.37                                    |
+  # register1.til_amount # => 13.37			                   |
+  # register1.decrease_til_amount 1.04     	                           |
+  # register1.til_amount # => 12.33					   |
+  #                                                                        |
+  def decrease_til_amount(by_amount)
+    @til -= by_amount
+  end
 end
