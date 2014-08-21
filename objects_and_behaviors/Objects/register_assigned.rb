@@ -32,7 +32,7 @@ class Register
   #                                                                        |
   def scan(*upc)
     upc.nil? ? return : nil
-    @scanned_items << upc
+    upc.count == 1 ? @scanned_items << upc[0] : @scanned_items << upc
     rescue => e
       e.inspect
       puts e.backtrace.join("\n")
@@ -58,6 +58,7 @@ class Register
 
   ##                                                                       |
   # remove upc from @scanned_items                                         |
+  #                                                                        |
   # register1 = Register.new register_id: 1                                |
   # register1.scanned_items # => []                                        |
   # Cashier.new.set_register(register1).scan 123,                          |
