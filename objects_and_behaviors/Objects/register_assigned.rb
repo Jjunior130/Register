@@ -37,7 +37,7 @@ class Register
       e.inspect
       puts e.backtrace.join("\n")
     else
-      puts "Register #{@register_id}	| scanned #{upc}	| #{Time.now}	"
+      puts "Register #{@register_id}    | scanned #{upc}    | #{Time.now}   "
   end
 
   ##                                                                       |
@@ -57,7 +57,7 @@ class Register
   end
 
   ##                                                                       |
-  # remove upc from	@scanned_items                                         |
+  # remove upc from @scanned_items                                         |
   # register1 = Register.new register_id: 1                                |
   # register1.scanned_items # => []                                        |
   # Cashier.new.set_register(register1).scan 123,                          |
@@ -76,9 +76,9 @@ class Register
   # register1 = Register.new register_id: 1                                |
   # register1.til_amount # => 0.0                                          |
   # register1.increase_til_amount 13.37                                    |
-  # register1.til_amount # => 13.37								                         |
-  # register1.increase_til_amount 1.04     	                               |
-  # register1.til_amount # => 14.41				                    				     |
+  # register1.til_amount # => 13.37                                        |
+  # register1.increase_til_amount 1.04                                     |
+  # register1.til_amount # => 14.41                                        |
   #                                                                        |
   def increase_til_amount(by_amount)
     @til += by_amount
@@ -90,9 +90,9 @@ class Register
   # register1 = Register.new register_id: 1                                |
   # register1.til_amount # => 0.0                                          |
   # register1.increase_til_amount 13.37                                    |
-  # register1.til_amount # => 13.37								                         |
-  # register1.decrease_til_amount 1.04     	                               |
-  # register1.til_amount # => 12.33				                    				     |
+  # register1.til_amount # => 13.37                                        |
+  # register1.decrease_til_amount 1.04                                     |
+  # register1.til_amount # => 12.33                                        |
   #                                                                        |
   def decrease_til_amount(by_amount)
     @til -= by_amount
